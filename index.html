@@ -7,19 +7,62 @@
     <title>Rock Paper Scissors</title>
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 <body>
-    
+
+    <div class="container">
+
+        <div class="jumbotron text-center">
+            <h1 class="display-4">Rock, Paper, Scissors, SHOOT!</h1>
+            <p class="lead">Do you feel like playing a game? Challenge your friends and see who's more lucky.</p>
+            <hr class="my-4">
+            <form action="" class="text-center" id="playerJoin">
+                <label for="nameInput">Ready to join? What's your name?</label>
+                <input type="text" id="nameInput">
+                <button type="submit" id="nameInputSubmit" class="btn btn-lg btn-info">Submit</button>
+            </form>
+        </div>
+
+        <div id="gameSection">
+            <div class="row">
+                <div class="col-lg-12 text-center">Time for RPS!</div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 text-center">
+                    <p>Player One: <span id="playerOneName"></span></p>
+                    <p>Wins: <span id="playerOneWins"></span></p>
+                    <p>Losses: <span id="playerOneLosses"></span></p>
+                </div>
+
+                <div class="col-lg-6"></div>
+
+                <div class="col-lg-3 text-center">
+                    <p>Player Two: <span id="playerTwoName"></span></p>
+                    <p>Wins: <span id="playerTwoWins"></span></p>
+                    <p>Losses: <span id="playerTwoLosses"></span></p>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+    </div>
+
+
+
+
 
         <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
         <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-messaging.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-analytics.js"></script>
     <script src="./assets/javascript/app.js"></script>
 </body>
 </html>
