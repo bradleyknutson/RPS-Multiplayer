@@ -12,4 +12,9 @@ body {
 
 #gameSection{
     background-color: #e9ecef;
+    min-height: 300px;
+}
+
+.rps-choice{
+    width: 100%;
 }
