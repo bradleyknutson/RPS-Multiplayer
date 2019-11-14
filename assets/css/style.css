@@ -18,3 +18,14 @@ body {
 .rps-choice{
     width: 100%;
 }
+
+#chatArea {
+    height: 100px;
+    border: 1px solid #e9ecef;
+    margin-bottom: 10px;
+    overflow:scroll;
+}
+
+#chat{
+    display: none;
+}

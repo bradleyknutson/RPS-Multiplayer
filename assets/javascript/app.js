@@ -15,6 +15,7 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
 var userKey;
+var username = 'guest'
 var playerNum;
 
 //Upon connection, push a value to connectionsRef in order to generate a random key and use that to modify the userKey variable.
@@ -33,13 +34,13 @@ database.ref('.info/connected').on('value', function(snapshot){
 //if not will update accordingly, same for player two.  Sets both players to erase upon disconnect so another user can fill the spot.
 $('#nameInputSubmit').click(function(event){
     event.preventDefault();
-    var name = $('#nameInput').val().trim();
+    username = $('#nameInput').val().trim();
     $("#nameInput").val('');
     database.ref('players').once('value', function(snapshot){
         if(!snapshot.child('playerOne').exists()){
             playerNum = 1;
             database.ref('players/playerOne').set({
-                name: name,
+                name: username,
                 wins: 0,
                 losses: 0,
                 key: userKey
@@ -48,7 +49,7 @@ $('#nameInputSubmit').click(function(event){
         }else if(!snapshot.child('playerTwo').exists()){
             playerNum = 2;
             database.ref('players/playerTwo').set({
-                name: name,
+                name: username,
                 wins: 0,
                 losses: 0,
                 key: userKey
@@ -57,6 +58,8 @@ $('#nameInputSubmit').click(function(event){
         }
     })
     $('#playerJoin').hide();
+    $('#chat').show();
+    $("#chatArea").scrollTop(function() { return this.scrollHeight; });
 });
 
 
@@ -81,6 +84,12 @@ database.ref('players').on('value', function(snapshot){
     
 });
 
+database.ref('chat').on('child_added', function(snapshot){
+    var newChat = $('<li class="text-left chatMessage .overflow-auto">' + username + ": " + snapshot.val().message + "</li>");
+    $('#chatArea').append(newChat);
+    $("#chatArea").scrollTop(function() { return this.scrollHeight; });
+});
+
 
 $(document.body).on('click', '.rps-choice', function(){
     var playerChoice = $(this).attr('value');
@@ -93,6 +102,19 @@ $(document.body).on('click', '.rps-choice', function(){
             choice: playerChoice
         });
     }
+});
+
+$('#sendChat').on('click', function(e){
+    e.preventDefault();
+    if(username){
+        message = $('#chatMessage').val();
+        database.ref('chat').push({
+            message: message,
+            username: username,
+            time: firebase.database.ServerValue.TIMESTAMP
+        });
+    }
+    $('#chatMessage').val('');
 });
 
 
@@ -156,5 +178,3 @@ function determineWinner(snapshot){
         }, 1000 * 5);
     }
 }
-
-//This is a completely separate commit, on Master
