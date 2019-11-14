@@ -85,7 +85,7 @@ database.ref('players').on('value', function(snapshot){
 });
 
 database.ref('chat').on('child_added', function(snapshot){
-    var newChat = $('<li class="text-left chatMessage .overflow-auto">' + username + ": " + snapshot.val().message + "</li>");
+    var newChat = $('<li class="text-left chatMessage .overflow-auto">' + snapshot.val().username + ": " + snapshot.val().message + "</li>");
     $('#chatArea').append(newChat);
     $("#chatArea").scrollTop(function() { return this.scrollHeight; });
 });
