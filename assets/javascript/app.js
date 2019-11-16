@@ -139,6 +139,8 @@ function showPlayerChoice(snapshot){
 }
 
 function determineWinner(snapshot){
+    $('#playerOneChoice').append("<img class='rps-choice' src=assets/images/" + snapshot.child('playerOne/choice').val() + ".png>");
+    $('#playerTwoChoice').append("<img class='rps-choice' src=assets/images/" + snapshot.child('playerTwo/choice').val() + ".png>");
     var playerOneChoice = snapshot.child('playerOne/choice').val();
     var playerTwoChoice = snapshot.child('playerTwo/choice').val();
     var playerOneWins = snapshot.child('playerOne/wins').val() + 1;
@@ -175,6 +177,15 @@ function determineWinner(snapshot){
     if(playerNum === 1){
         setTimeout(function(){
             $('#choiceSection').html('<div class="row"><div class="col-lg-4"><img src="assets/images/rock.png" alt="" value="rock" class="rps-choice"></div><div class="col-lg-4"><img src="assets/images/paper.png" alt="" value="paper" class="rps-choice"></div><div class="col-lg-4"><img src="assets/images/scissors.png" alt="" value="scissors" class="rps-choice"></div></div>');
-        }, 1000 * 5);
+            $('#playerOneChoice').empty();
+            $('#playerTwoChoice').empty();
+            $('#waiting').text('Waiting on Player One');
+        }, 1000 * 3);
+    }else{
+        setTimeout(function(){
+            $('#playerOneChoice').empty();
+            $('#playerTwoChoice').empty();
+            $('#waiting').text('Waiting on Player One');
+        }, 1000 * 3);
     }
 }
