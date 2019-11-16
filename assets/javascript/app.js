@@ -34,32 +34,41 @@ database.ref('.info/connected').on('value', function(snapshot){
 //if not will update accordingly, same for player two.  Sets both players to erase upon disconnect so another user can fill the spot.
 $('#nameInputSubmit').click(function(event){
     event.preventDefault();
-    username = $('#nameInput').val().trim();
-    $("#nameInput").val('');
-    database.ref('players').once('value', function(snapshot){
-        if(!snapshot.child('playerOne').exists()){
-            playerNum = 1;
-            database.ref('players/playerOne').set({
-                name: username,
-                wins: 0,
-                losses: 0,
-                key: userKey
-            })
-            database.ref('players/playerOne').onDisconnect().remove();
-        }else if(!snapshot.child('playerTwo').exists()){
-            playerNum = 2;
-            database.ref('players/playerTwo').set({
-                name: username,
-                wins: 0,
-                losses: 0,
-                key: userKey
-            })
-            database.ref('players/playerTwo').onDisconnect().remove();
-        }
-    })
-    $('#playerJoin').hide();
-    $('#chat').show();
-    $("#chatArea").scrollTop(function() { return this.scrollHeight; });
+    if($('#nameInput').val().trim()){
+        username = $('#nameInput').val().trim();
+        $("#nameInput").val('');
+        message = username + " has joined the game";
+        database.ref('chat').push({
+            message: message,
+            username: "ChatBot",
+            time: firebase.database.ServerValue.TIMESTAMP
+        });
+        database.ref('players').once('value', function(snapshot){
+            if(!snapshot.child('playerOne').exists()){
+                playerNum = 1;
+                database.ref('players/playerOne').set({
+                    name: username,
+                    wins: 0,
+                    losses: 0,
+                    key: userKey
+                })
+                database.ref('players/playerOne').onDisconnect().remove();
+            }else if(!snapshot.child('playerTwo').exists()){
+                playerNum = 2;
+                database.ref('players/playerTwo').set({
+                    name: username,
+                    wins: 0,
+                    losses: 0,
+                    key: userKey
+                })
+                database.ref('players/playerTwo').onDisconnect().remove();
+            }
+        })
+        $('#playerJoin').hide();
+        $('#chat').show();
+        $("#chatArea").scrollTop(function() { return this.scrollHeight; });
+    }
+
 });
 
 
@@ -93,6 +102,8 @@ database.ref('chat').on('child_added', function(snapshot){
 
 $(document.body).on('click', '.rps-choice', function(){
     var playerChoice = $(this).attr('value');
+    $('.rps-choice').removeClass('selectedChoice');
+    $(this).addClass('selectedChoice');
     if(playerNum === 1){
         database.ref('players/playerOne').update({
             choice: playerChoice
@@ -162,8 +173,18 @@ function determineWinner(snapshot){
                 losses: playerTwoLosses
             });
             $('#waiting').text('Player One Wins!');
+            database.ref('chat').push({
+                message: "Player One Wins!",
+                username: "ChatBot",
+                time: firebase.database.ServerValue.TIMESTAMP
+            });
     }else if(playerOneChoice === playerTwoChoice){
         $('#waiting').text("It's a tie!");
+        database.ref('chat').push({
+            message: "It's a tie!",
+            username: "ChatBot",
+            time: firebase.database.ServerValue.TIMESTAMP
+        });
     }else{
         database.ref('players/playerTwo').update({
             wins: playerTwoWins
@@ -172,6 +193,11 @@ function determineWinner(snapshot){
             losses: playerOneLosses
         });
         $('#waiting').text('Player Two Wins!');
+        database.ref('chat').push({
+            message: "Player Two Wins!",
+            username: "ChatBot",
+            time: firebase.database.ServerValue.TIMESTAMP
+        });
     }
     $('#choiceSection').empty();
     if(playerNum === 1){
@@ -180,12 +206,12 @@ function determineWinner(snapshot){
             $('#playerOneChoice').empty();
             $('#playerTwoChoice').empty();
             $('#waiting').text('Waiting on Player One');
-        }, 1000 * 3);
+        }, 1000 * 5);
     }else{
         setTimeout(function(){
             $('#playerOneChoice').empty();
             $('#playerTwoChoice').empty();
             $('#waiting').text('Waiting on Player One');
-        }, 1000 * 3);
+        }, 1000 * 5);
     }
 }

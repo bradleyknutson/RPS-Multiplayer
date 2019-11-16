@@ -29,3 +29,7 @@ body {
 #chat{
     display: none;
 }
+
+.selectedChoice {
+    border: 5px solid greenyellow;
+}
