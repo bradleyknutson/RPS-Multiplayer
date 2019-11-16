@@ -173,18 +173,23 @@ function determineWinner(snapshot){
                 losses: playerTwoLosses
             });
             $('#waiting').text('Player One Wins!');
+            if(playerNum === 1){
+                database.ref('chat').push({
+                    message: "Player One Wins!",
+                    username: "ChatBot",
+                    time: firebase.database.ServerValue.TIMESTAMP
+                });
+            }
+    }else if(playerOneChoice === playerTwoChoice){
+        $('#waiting').text("It's a tie!");
+        if(playerNum === 1){
             database.ref('chat').push({
-                message: "Player One Wins!",
+                message: "It's a tie!",
                 username: "ChatBot",
                 time: firebase.database.ServerValue.TIMESTAMP
             });
-    }else if(playerOneChoice === playerTwoChoice){
-        $('#waiting').text("It's a tie!");
-        database.ref('chat').push({
-            message: "It's a tie!",
-            username: "ChatBot",
-            time: firebase.database.ServerValue.TIMESTAMP
-        });
+        }
+
     }else{
         database.ref('players/playerTwo').update({
             wins: playerTwoWins
@@ -193,11 +198,13 @@ function determineWinner(snapshot){
             losses: playerOneLosses
         });
         $('#waiting').text('Player Two Wins!');
-        database.ref('chat').push({
-            message: "Player Two Wins!",
-            username: "ChatBot",
-            time: firebase.database.ServerValue.TIMESTAMP
-        });
+        if(playerNum === 1){
+            database.ref('chat').push({
+                message: "Player Two Wins!",
+                username: "ChatBot",
+                time: firebase.database.ServerValue.TIMESTAMP
+            });
+        }
     }
     $('#choiceSection').empty();
     if(playerNum === 1){
